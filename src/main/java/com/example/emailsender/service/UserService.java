@@ -11,5 +11,6 @@ public interface UserService {
     UserDto findById(Long id);
     void deleteById(Long id);
     void updateUser(UserRequest userRequest,Long id);
+    void saveUser(UserRequest request);
 
 }

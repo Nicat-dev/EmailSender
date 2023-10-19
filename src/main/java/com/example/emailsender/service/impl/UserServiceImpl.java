@@ -2,6 +2,7 @@ package com.example.emailsender.service.impl;
 
 import com.example.emailsender.dto.UserDto;
 import com.example.emailsender.dto.request.UserRequest;
+import com.example.emailsender.exception.ResourceExistsException;
 import com.example.emailsender.exception.ResourceNotFoundException;
 import com.example.emailsender.mapper.UserMapper;
 import com.example.emailsender.model.User;
@@ -37,21 +38,26 @@ public class UserServiceImpl implements UserService{
     @Override
     public void updateUser(UserRequest userRequest, Long id) {
         if (Objects.nonNull(userRequest)){
-            User user = getUserById(id);
             repository.save(
-                    user = User.builder()
-                            .name(userRequest.getName())
-                            .surname(userRequest.getSurname())
-                            .email(userRequest.getEmail())
-                            .age(userRequest.getAge())
-                            .location(userRequest.getLocation())
-                            .build()
+                    mapper.requestToEntity(userRequest)
             );
         }
+    }
+
+    @Override
+    public void saveUser(UserRequest request) {
+        userExistById(request.getId());
+        repository.save(mapper.requestToEntity(request));
     }
 
     private User getUserById(Long id){
         return repository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException(id.toString(),"id cannot  be null",id));
+    }
+
+    private void userExistById(Long id){
+        if (!repository.existsById(id)){
+            throw new ResourceExistsException("User", id.toString(),id);
+        }
     }
 }

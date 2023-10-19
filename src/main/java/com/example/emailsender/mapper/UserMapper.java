@@ -1,6 +1,7 @@
 package com.example.emailsender.mapper;
 
 import com.example.emailsender.dto.UserDto;
+import com.example.emailsender.dto.request.UserRequest;
 import com.example.emailsender.model.User;
 import org.mapstruct.Mapper;
 
@@ -11,5 +12,6 @@ public interface UserMapper {
 
     List<UserDto> entityListToDtoList(List<User> users);
     UserDto entityToDto(User user);
+    User requestToEntity(UserRequest user);
 
 }
