@@ -2,6 +2,7 @@ package com.example.emailsender.controller;
 
 import com.example.emailsender.dto.response.BaseResponse;
 import com.example.emailsender.service.EmailSenderService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,13 @@ public class EmailController {
         return ResponseEntity.ok(new BaseResponse<>(Boolean.TRUE,
                 "Message sendded",
                 emailSenderService.messageSender(email,subject,body)));
+    }
+
+    @PostMapping(name = "/sendWithAttachment")
+    ResponseEntity<BaseResponse<String>> sendMessageWithAttachment(@RequestBody String email,String subject,String body,
+                                                                   String attachment) throws MessagingException {
+        return ResponseEntity.ok(new BaseResponse<>(Boolean.TRUE,"Message successfully send with attcahment",
+                emailSenderService.sendEmailWithAttachment(email,body,subject,attachment)));
     }
 
 }
