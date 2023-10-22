@@ -12,6 +12,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -51,7 +52,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         FileSystemResource fileSystem
                 = new FileSystemResource(new File(attachment));
 
-        mimeMessageHelper.addAttachment(fileSystem.getFilename(),
+        mimeMessageHelper.addAttachment(Objects.requireNonNull(fileSystem.getFilename()),
                 fileSystem);
 
         javaMailSender.send(mimeMessage);
